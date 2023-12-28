@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE İstemci</title>
+</head>
+<body>
+
+<div id="sse-data-container"></div>
+
+<script>
+    // SSE bağlantısını oluştur
+    const eventSource = new EventSource('http://localhost:8080/sse-streams');
+
+    // SSE olaylarını dinle
+    eventSource.onmessage = function (event) {
+        const sseDataContainer = document.getElementById('sse-data-container');
+        sseDataContainer.innerHTML += '<p>' + event.data + '</p>';
+    };
+
+    // Hata durumunu dinle
+    eventSource.onerror = function (event) {
+        console.error('SSE Error:', event);
+        eventSource.close();
+    };
+
+    // Bağlantının kapandığını dinle
+    eventSource.onclose = function (event) {
+        console.log('SSE Connection Closed:', event);
+    };
+</script>
+
+</body>
+</html>
